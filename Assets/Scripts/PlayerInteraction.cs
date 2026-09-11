@@ -3,10 +3,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactionDistance = 10f;
+    public float interactionDistance = 10f; // Distancia máxima de interacción
 
     void Update()
     {
+        // E para interactuar
         if (Keyboard.current.eKey.wasPressedThisFrame)
         {
             Interact();
@@ -15,10 +16,12 @@ public class PlayerInteraction : MonoBehaviour
 
     void Interact()
     {
+        // Raycast desde el centro de la cámara
         Ray ray = Camera.main.ViewportPointToRay(
             new Vector3(0.5f, 0.5f, 0)
         );
 
+        // Mostramos el Raycast en la escena
         Debug.DrawRay(
             ray.origin,
             ray.direction * interactionDistance,
@@ -26,30 +29,22 @@ public class PlayerInteraction : MonoBehaviour
             2f
         );
 
+        // Detectamos los objetos que están adelante
         RaycastHit[] hits = Physics.RaycastAll(
             ray,
             interactionDistance
         );
 
-        Debug.Log("Objetos detectados: " + hits.Length);
-
         foreach (RaycastHit hit in hits)
         {
-            Debug.Log(
-                "Detectado: " + hit.collider.name +
-                " | Distancia: " + hit.distance
-            );
-
+            // Buscamos una puerta
             Door door = hit.collider.GetComponentInParent<Door>();
 
             if (door != null)
             {
-                Debug.Log("PUERTA ENCONTRADA");
                 door.Open();
                 return;
             }
         }
-
-        Debug.Log("No encontré una puerta");
     }
 }

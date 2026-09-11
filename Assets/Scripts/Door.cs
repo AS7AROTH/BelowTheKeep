@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public bool isOpen = false;
-    public PlayerMovement player;
+    public bool isOpen = false; // Estado de la puerta
+    public PlayerMovement player; // Referencia al jugador
 
     public void Open()
     {
+        // Comprobamos que exista el jugador
         if (player == null)
         {
             Debug.Log("NO HAY PLAYER ASIGNADO");
             return;
         }
 
+        // Comprobamos si tiene la llave
         Debug.Log("Tiene llave: " + player.hasKey);
 
         if (!player.hasKey)
@@ -21,6 +23,7 @@ public class Door : MonoBehaviour
             return;
         }
 
+        // Abrimos o cerramos la puerta
         if (isOpen)
         {
             transform.Rotate(0, -90, 0);
